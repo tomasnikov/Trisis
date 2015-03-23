@@ -86,15 +86,16 @@ window.onload = function init()
 
 function colorCube()
 {
-    quad( 1, 0, 3, 2 );
-    quad( 2, 3, 7, 6 );
-    quad( 3, 0, 4, 7 );
-    quad( 6, 5, 1, 2 );
-    quad( 4, 5, 6, 7 );
-    quad( 5, 4, 0, 1 );
+    var random = Math.floor(Math.random()*7);
+    quad( 1, 0, 3, 2, random );
+    quad( 2, 3, 7, 6, random );
+    quad( 3, 0, 4, 7, random );
+    quad( 6, 5, 1, 2, random );
+    quad( 4, 5, 6, 7, random );
+    quad( 5, 4, 0, 1, random );
 }
 
-function quad(a, b, c, d) 
+function quad(a, b, c, d, e) 
 {
     var vertices = [
         vec3( -0.5, -0.5,  0.5 ),
@@ -131,7 +132,7 @@ function quad(a, b, c, d)
         //colors.push( vertexColors[indices[i]] );
     
         // for solid colored faces use 
-        colors.push(vertexColors[a]);
+        colors.push(vertexColors[e]);
         
     }
 }
@@ -159,62 +160,26 @@ function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    if(movement && moveUp<120)
-        moveUp += 2;
-    else if(!movement && moveUp>30)
-        moveUp -= 2;
-
-
     var ctm = mat4();
     ctm = mult( ctm, rotate( parseFloat(spinX), [1, 0, 0] ) );
     ctm = mult( ctm, rotate( parseFloat(spinY), [0, 1, 0] ) ) ;
 
-    // Build sprellikarl
-    // Búkur
-    ctm1 = mult( ctm, translate( 0.0, 0.0, 0.0 ) );
-    ctm1 = mult( ctm1, scale4( 0.35, 0.7, 0.15 ) );
+    // Build beinn
+    // Neðsti teningur
+    ctm1 = mult( ctm, translate( 0.0,-0.51, 0.0 ) );
+    ctm1 = mult( ctm1, scale4(0.5,0.5,0.5));
     gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
 
-    //Haus
-    ctm1 = mult( ctm, translate( 0.0, 0.4, 0.0 ) );
-    ctm1 = mult( ctm1, scale4( 0.15, 0.15, 0.12 ) );
+    //Mið teningur
+    ctm1 = mult( ctm, translate( 0, 0.0, 0.0 ) );
+    ctm1 = mult( ctm1, scale4(0.5,0.5,0.5));
     gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
 
-    //Vinstri löpp
-    ctm1 = mult( ctm, translate( -0.1, -0.48, 0.0 ) );
-    ctm1 = mult( ctm1, translate( 0.0, 0.2, 0.0));
-    ctm1 = mult( ctm1, rotate(30 -moveUp, [0,0,1]));
-    ctm1 = mult( ctm1, translate(0.0, -0.2, 0.0));
-    ctm1 = mult( ctm1, scale4( 0.1, 0.5, 0.1 ) );
-    gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
-    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
-
-    //Hægri löpp
-    ctm1 = mult( ctm, translate( 0.1, -0.48, 0.0 ) );
-    ctm1 = mult( ctm1, translate( 0.0, 0.2, 0.0));
-    ctm1 = mult( ctm1, rotate(- 30 + moveUp, [0,0,1]));
-    ctm1 = mult( ctm1, translate( 0.0, -0.2, 0.0));
-    ctm1 = mult( ctm1, scale4( 0.1, 0.5, 0.1 ) );
-    gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
-    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
-
-    //Vinstri hönd
-    ctm1 = mult( ctm, translate( -0.13, 0.05, 0.0 ) );
-    ctm1 = mult( ctm1, translate( 0.0, 0.2, 0.0));
-    ctm1 = mult( ctm1, rotate(-moveUp, [0,0,1]));
-    ctm1 = mult( ctm1, translate( 0.0, -0.2, 0.0));
-    ctm1 = mult( ctm1, scale4( 0.1, 0.4, 0.1 ) );
-    gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
-    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
-
-    //Hægri hönd
-    ctm1 = mult( ctm, translate( 0.13, 0.05, 0.0 ) );
-    ctm1 = mult( ctm1, translate( 0.0, 0.2, 0.0));
-    ctm1 = mult( ctm1, rotate(moveUp, [0,0,1]));
-    ctm1 = mult( ctm1, translate( 0.0, -0.2, 0.0));
-    ctm1 = mult( ctm1, scale4( 0.1, 0.4, 0.1 ) );
+    //Efsti teningur
+    ctm1 = mult( ctm, translate( 0, 0.51, 0.0 ) );
+    ctm1 = mult( ctm1, scale4(0.5,0.5,0.5));
     gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
 
