@@ -22,6 +22,8 @@ var moveUp = 30;
 
 var matrixLoc;
 
+var blocks = [];
+
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
     
@@ -29,6 +31,16 @@ window.onload = function init() {
     if (!gl) { alert("WebGL isn't available"); }
 
     colorCube();
+    blocks.push(new Block({
+        x: 0.3,
+        y: 0.1,
+        z: 1
+    }));
+    blocks.push(new Block({
+        x: -0.7,
+        y: 0.1,
+        z: 0
+    }));
 
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
@@ -155,28 +167,9 @@ function scale4(x, y, z) {
 function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    var ctm = mat4();
-    ctm = mult(ctm, rotate(parseFloat(spinX), [1, 0, 0]));
-    ctm = mult(ctm, rotate(parseFloat(spinY), [0, 1, 0])) ;
-
-    // Build beinn
-    // Neðsti teningur
-    ctm1 = mult( ctm, translate( 0.0,-0.51, 0.0 ) );
-    ctm1 = mult( ctm1, scale4(0.5,0.5,0.5));
-    gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
-    gl.drawArrays(gl.TRIANGLES, 0, NumVertices);
-
-    // Miðteningur
-    ctm1 = mult(ctm, translate( 0.0, 0.0, 0.0));
-    ctm1 = mult( ctm1, scale4(0.5,0.5,0.5));
-    gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
-    gl.drawArrays(gl.TRIANGLES, 0, NumVertices);
-
-    //Efsti teningur
-    ctm1 = mult(ctm, translate( 0.0, 0.51, 0.0));
-    ctm1 = mult( ctm1, scale4(0.5,0.5,0.5));
-    gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
-    gl.drawArrays(gl.TRIANGLES, 0, NumVertices);
+    for (var i = 0; i < blocks.length; i++) {
+        blocks[i].render(spinX, spinY);
+    }
 
     requestAnimFrame(render);
 }
