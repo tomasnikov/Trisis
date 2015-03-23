@@ -1,0 +1,3 @@
+var BLOCK_SIZE = 0.3;
+var BOARD_SIZE = 6;
+var BOARD_HEIGHT = 8;

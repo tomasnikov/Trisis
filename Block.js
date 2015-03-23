@@ -6,6 +6,8 @@ function Block(descr) {
     this.colorIndex = Math.floor(Math.random()*6);
     this.DROP_TIME = 1000;
     this.timer = this.DROP_TIME;
+    this.active = true;
+    this.moved = false;
 }
 
 Block.prototype.render = function(spinX, spinY) {
@@ -13,23 +15,41 @@ Block.prototype.render = function(spinX, spinY) {
     ctm = mult(ctm, rotate(parseFloat(spinX), [1, 0, 0]));
     ctm = mult(ctm, rotate(parseFloat(spinY), [0, 1, 0])) ;
 
+    this.calculateRenderLocation();
     // Hver teningur
-    this.renderCube(ctm, this.x, this.y-this.blockSize-0.01, this.z);
-    this.renderCube(ctm, this.x, this.y, this.z);
-    this.renderCube(ctm, this.x, this.y+this.blockSize+0.01, this.z);
+    this.renderCube(ctm, this.renderX, this.renderY - this.spaceBetween - 0.02, this.renderZ);
+    this.renderCube(ctm, this.renderX, this.renderY, this.renderZ);
+    this.renderCube(ctm, this.renderX, this.renderY + this.spaceBetween + 0.02, this.renderZ);
+};
+
+Block.prototype.calculateRenderLocation = function() {
+    this.spaceBetween = 2/BOARD_SIZE;
+    this.renderX = (this.x-BOARD_SIZE/2)/(BOARD_SIZE/2);
+    this.renderY = (this.y-BOARD_HEIGHT/2)/(BOARD_HEIGHT/2);
+    this.renderZ = (this.z-BOARD_SIZE/2)/(BOARD_SIZE/2);
 };
 
 Block.prototype.renderCube = function(ctm, x, y, z) {
     var ctm1 = mult(ctm, translate(x, y, z));
-    ctm1 = mult(ctm1, scale4(this.blockSize, this.blockSize, this.blockSize));
+    ctm1 = mult(ctm1, scale4(this.spaceBetween, this.spaceBetween, this.spaceBetween));
     gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
     gl.drawArrays(gl.TRIANGLES, this.numVertices*this.colorIndex, this.numVertices);
 };
 
 Block.prototype.update = function(dt) {
-    this.timer -= dt;
-    if(this.timer <= 0) {
-        this.timer = this.DROP_TIME;
-        this.y -= this.blockSize;
+    if(this.active) {
+        this.timer -= dt;
+        if(this.timer <= 0) {
+            this.timer = this.DROP_TIME;
+            this.y -= 1;
+            this.moved = true;
+        } else {
+            this.moved = false;
+        }
     }
+};
+
+Block.prototype.land = function() {
+    this.active = false;
+    this.y += 1;
 };
