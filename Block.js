@@ -64,3 +64,23 @@ Block.prototype.land = function() {
     this.moved = false;
     this.y += 1;
 };
+
+Block.prototype.rotateZ = function(sign) {
+    this.rotate(0, 1, sign);
+};
+
+Block.prototype.rotateY = function(sign) {
+    this.rotate(0, 2, sign);
+};
+
+Block.prototype.rotateX = function(sign) {
+    this.rotate(1, 2, sign);
+};
+
+Block.prototype.rotate = function(first, second, sign) {
+    for(i = 0; i < this.cubes.length; i++) {
+        var temp = this.cubes[i][second]*sign;
+        this.cubes[i][second] = -this.cubes[i][first]*sign;
+        this.cubes[i][first] = temp;
+    }
+};

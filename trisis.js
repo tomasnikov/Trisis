@@ -77,6 +77,30 @@ window.onload = function init() {
         if(e.keyCode == 39  && blocks[blocks.length-1].x < BOARD_SIZE-1) {
             blocks[blocks.length-1].x += 1;
         }
+
+        if(String.fromCharCode(e.keyCode) === "D") {
+            blocks[blocks.length-1].rotateZ(1);
+        }
+
+        if(String.fromCharCode(e.keyCode) === "C") {
+            blocks[blocks.length-1].rotateZ(-1);
+        }
+
+        if(String.fromCharCode(e.keyCode) === "S") {
+            blocks[blocks.length-1].rotateY(1);
+        }
+
+        if(String.fromCharCode(e.keyCode) === "X") {
+            blocks[blocks.length-1].rotateY(-1);
+        }
+
+        if(String.fromCharCode(e.keyCode) === "A") {
+            blocks[blocks.length-1].rotateX(1);
+        }
+
+        if(String.fromCharCode(e.keyCode) === "Z") {
+            blocks[blocks.length-1].rotateX(-1);
+        }
     });
     
     render(0);
