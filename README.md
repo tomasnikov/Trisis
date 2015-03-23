@@ -1,0 +1,2 @@
+# Trisis
+Fakk u nori
