@@ -1,3 +1,6 @@
+var TYPE_LINE = 0;
+var TYPE_L = 1;
+
 function Block(descr) {
     for (var property in descr) {
         this[property] = descr[property];
@@ -8,6 +11,12 @@ function Block(descr) {
     this.timer = this.DROP_TIME;
     this.active = true;
     this.moved = false;
+    this.type = Math.floor(Math.random()*2);
+    if(this.type === TYPE_L) {
+        this.cubes = [[0, 0, 0], [0, -1, 0], [0, 1, 0]];
+    } else {
+        this.cubes = [[0, 0, 0], [0, -1, 0], [1, 0, 0]];
+    }
 }
 
 Block.prototype.render = function(spinX, spinY) {
@@ -17,9 +26,10 @@ Block.prototype.render = function(spinX, spinY) {
 
     this.calculateRenderLocation();
     // Hver teningur
-    this.renderCube(ctm, this.renderX, this.renderY - this.spaceBetween - 0.02, this.renderZ);
-    this.renderCube(ctm, this.renderX, this.renderY, this.renderZ);
-    this.renderCube(ctm, this.renderX, this.renderY + this.spaceBetween + 0.02, this.renderZ);
+    for(var i = 0; i < this.cubes.length; i++) {
+        var dist = this.spaceBetween + 0.02;
+        this.renderCube(ctm, this.renderX + this.cubes[i][0]*dist, this.renderY + this.cubes[i][1]*dist, this.renderZ + this.cubes[i][2]*dist);
+    }
 };
 
 Block.prototype.calculateRenderLocation = function() {

@@ -92,7 +92,6 @@ function render(time) {
 
         // If block moved we check for collision and undo its motion if needed
         if(blocks[i].moved) {
-            console.log(blocks[i].y);
             if(blocks[i].y < 0) {
                 blocks[i].land();
                 spawnBlock();
