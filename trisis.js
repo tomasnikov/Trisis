@@ -1,8 +1,6 @@
 var canvas;
 var gl;
 
-var NumVertices  = 36;
-
 var points = [];
 var colors = [];
 
@@ -30,7 +28,11 @@ window.onload = function init() {
     gl = WebGLUtils.setupWebGL( canvas );
     if (!gl) { alert("WebGL isn't available"); }
 
-    colorCube();
+    // create cubes in all colors
+    for (var i = 0; i < 6; i++) {
+        colorCube(i);
+    }
+    
     blocks.push(new Block({
         x: 0.3,
         y: 0.1,
@@ -95,15 +97,13 @@ window.onload = function init() {
     render();
 };
 
-function colorCube()
-{
-    var random = Math.floor(Math.random()*7);
-    quad( 1, 0, 3, 2, random );
-    quad( 2, 3, 7, 6, random );
-    quad( 3, 0, 4, 7, random );
-    quad( 6, 5, 1, 2, random );
-    quad( 4, 5, 6, 7, random );
-    quad( 5, 4, 0, 1, random );
+function colorCube(i) {
+    quad(1, 0, 3, 2, i);
+    quad(2, 3, 7, 6, i);
+    quad(3, 0, 4, 7, i);
+    quad(6, 5, 1, 2, i);
+    quad(4, 5, 6, 7, i);
+    quad(5, 4, 0, 1, i);
 }
 
 function quad(a, b, c, d, e) {

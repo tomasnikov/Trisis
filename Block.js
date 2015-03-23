@@ -2,6 +2,8 @@ function Block(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
+    this.numVertices = 36;
+    this.colorIndex = Math.floor(Math.random()*6);
 }
 
 Block.prototype.render = function(spinX, spinY) {
@@ -19,5 +21,5 @@ Block.prototype.renderCube = function(ctm, x, y, z) {
     var ctm1 = mult(ctm, translate(x, y, z));
     ctm1 = mult(ctm1, scale4(0.5,0.5,0.5));
     gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
-    gl.drawArrays(gl.TRIANGLES, 0, NumVertices);
+    gl.drawArrays(gl.TRIANGLES, this.numVertices*this.colorIndex, this.numVertices);
 };
