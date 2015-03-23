@@ -22,6 +22,9 @@ var matrixLoc;
 
 var blocks = [];
 
+var time = 0;
+var prevTime = -1/60;
+
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
     
@@ -36,12 +39,14 @@ window.onload = function init() {
     blocks.push(new Block({
         x: 0.3,
         y: 0.1,
-        z: 1
+        z: 1,
+        blockSize: 0.2
     }));
     blocks.push(new Block({
         x: -0.7,
         y: 0.1,
-        z: 0
+        z: 0,
+        blockSize: 0.2
     }));
 
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -94,7 +99,7 @@ window.onload = function init() {
         }
     });
     
-    render();
+    render(0);
 };
 
 function colorCube(i) {
@@ -164,10 +169,13 @@ function scale4(x, y, z) {
 }
 
 
-function render() {
+function render(time) {
+    var dt = time - prevTime;
+    prevTime = time;
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     for (var i = 0; i < blocks.length; i++) {
+        blocks[i].update(dt);
         blocks[i].render(spinX, spinY);
     }
 
