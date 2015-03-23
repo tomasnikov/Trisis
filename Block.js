@@ -51,5 +51,6 @@ Block.prototype.update = function(dt) {
 
 Block.prototype.land = function() {
     this.active = false;
+    this.moved = false;
     this.y += 1;
 };

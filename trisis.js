@@ -60,6 +60,24 @@ window.onload = function init() {
             origY = e.offsetY;
         }
     });
+
+    window.addEventListener("keydown", function(e) {
+        if(e.keyCode == 38 && blocks[blocks.length-1].z < BOARD_SIZE-1) { // up
+            blocks[blocks.length-1].z += 1;
+        }
+
+        if(e.keyCode == 40 && blocks[blocks.length-1].z > 0) { // down
+            blocks[blocks.length-1].z -= 1;
+        }
+
+        if(e.keyCode == 37  && blocks[blocks.length-1].x > 0) {
+            blocks[blocks.length-1].x -= 1;
+        }
+
+        if(e.keyCode == 39  && blocks[blocks.length-1].x < BOARD_SIZE-1) {
+            blocks[blocks.length-1].x += 1;
+        }
+    });
     
     render(0);
 };
