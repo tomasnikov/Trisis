@@ -3,6 +3,7 @@ var gl;
 
 var points = [];
 var colors = [];
+var texCoords = [];
 
 var xAxis = 0;
 var yAxis = 1;
@@ -19,8 +20,10 @@ var origY;
 var moveUp = 30;
 
 var matrixLoc;
+var program;
 
 var blocks = [];
+var textures = [];
 
 var time = 0;
 var prevTime = -1/60;

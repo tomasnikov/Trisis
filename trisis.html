@@ -2,13 +2,20 @@
 
 <script id="vertex-shader" type="x-shader/x-vertex">
 attribute  vec4 vPosition;
-attribute  vec4 vColor;
-varying vec4 fColor;
+attribute  vec2 vTexCoord;
+
+//attribute  vec4 vColor;
+//varying vec4 fColor;
+varying vec2 fTexCoord;
 
 uniform mat4 rotation;
 
+uniform mat4 projection;
+uniform mat4 modelview;
+
 void main() {
-    fColor = vColor;
+    //fColor = vColor;
+    fTexCoord = vTexCoord;
     gl_Position = rotation * vPosition;
 } 
 </script>
@@ -17,10 +24,14 @@ void main() {
 
 precision mediump float;
    
-varying vec4 fColor;
+//varying vec4 fColor;
+varying vec2 fTexCoord;
+
+uniform sampler2D texture;
 
 void main() {
-    gl_FragColor = fColor;
+    //gl_FragColor = fColor;
+    gl_FragColor = texture2D( texture, fTexCoord );
 }
 </script>
 
@@ -37,6 +48,12 @@ void main() {
 <canvas id="gl-canvas" width="512" height="512">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
+<img id = "texImage1" src = "tetrisblue.png" hidden ></img>
+<img id = "texImage2" src = "tetriscyan.png" hidden ></img>
+<img id = "texImage3" src = "tetrispink.png" hidden ></img>
+<img id = "texImage4" src = "tetrisred.png" hidden ></img>
+<img id = "texImage5" src = "tetrisgreen.png" hidden ></img>
+<img id = "texImage6" src = "tetrisyellow.png" hidden ></img>
 
 </body>
 </html>
