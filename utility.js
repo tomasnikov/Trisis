@@ -101,16 +101,6 @@ function setupGL() {
     //
     program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
-    
-    /*
-    var cBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
-
-    var vColor = gl.getAttribLocation(program, "vColor");
-    gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vColor);
-    */
 
     var vBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
@@ -130,11 +120,7 @@ function setupGL() {
 
     matrixLoc = gl.getUniformLocation(program, "rotation");
 
-    /*for(var i = 0; i<6; i++){
+    for(var i = 1; i<7; i++){
         textures[i] = configureTexture(document.getElementById("texImage" + i));
     }
-    */
-
-    var image1 = document.getElementById("texImage1");
-    texture1 = configureTexture( image1 );
 }

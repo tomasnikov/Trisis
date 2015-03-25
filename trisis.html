@@ -4,8 +4,7 @@
 attribute  vec4 vPosition;
 attribute  vec2 vTexCoord;
 
-//attribute  vec4 vColor;
-//varying vec4 fColor;
+
 varying vec2 fTexCoord;
 
 uniform mat4 rotation;
@@ -14,7 +13,7 @@ uniform mat4 projection;
 uniform mat4 modelview;
 
 void main() {
-    //fColor = vColor;
+
     fTexCoord = vTexCoord;
     gl_Position = rotation * vPosition;
 } 
@@ -23,14 +22,13 @@ void main() {
 <script id="fragment-shader" type="x-shader/x-fragment">
 
 precision mediump float;
-   
-//varying vec4 fColor;
+
 varying vec2 fTexCoord;
 
 uniform sampler2D texture;
 
 void main() {
-    //gl_FragColor = fColor;
+
     gl_FragColor = texture2D( texture, fTexCoord );
 }
 </script>

@@ -40,7 +40,7 @@ Block.prototype.calculateRenderLocation = function() {
 };
 
 Block.prototype.renderCube = function(ctm, x, y, z) {
-    gl.bindTexture( gl.TEXTURE_2D, texture1 );
+    gl.bindTexture( gl.TEXTURE_2D, textures[this.colorIndex] );
     var ctm1 = mult(ctm, translate(x, y, z));
     ctm1 = mult(ctm1, scale4(this.spaceBetween, this.spaceBetween, this.spaceBetween));
     gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));

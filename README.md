@@ -1,3 +1,3 @@
 # Trisis
 Fakk u nori
-Þú sökkar líka í dota
+Betri en þú tík
