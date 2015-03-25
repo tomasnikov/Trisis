@@ -27,7 +27,7 @@ Block.prototype.render = function(spinX, spinY) {
     this.calculateRenderLocation();
     // Hver teningur
     for(var i = 0; i < this.cubes.length; i++) {
-        var dist = this.spaceBetween + 0.02;
+        var dist = this.spaceBetween;
         this.renderCube(ctm, this.renderX + this.cubes[i][0]*dist, this.renderY + this.cubes[i][1]*dist, this.renderZ + this.cubes[i][2]*dist);
     }
 };
