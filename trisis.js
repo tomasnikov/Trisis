@@ -81,6 +81,10 @@ window.onload = function init() {
             blocks[blocks.length-1].x += 1;
         }
 
+        if(e.keyCode == 32) {
+            blocks[blocks.length-1].y = 0;
+        }
+
         if(String.fromCharCode(e.keyCode) === "D") {
             blocks[blocks.length-1].rotateZ(1);
         }

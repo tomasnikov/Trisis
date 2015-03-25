@@ -120,7 +120,9 @@ function setupGL() {
 
     matrixLoc = gl.getUniformLocation(program, "rotation");
 
-    for(var i = 1; i<7; i++){
+    
+    for(var i = 1; i<=6; i++){
         textures[i] = configureTexture(document.getElementById("texImage" + i));
     }
+    
 }
