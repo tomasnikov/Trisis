@@ -30,6 +30,8 @@ var textures = [];
 var time = 0;
 var prevTime = -1/60;
 
+var gameOver = false;
+
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
     
@@ -110,6 +112,10 @@ window.onload = function init() {
         if(String.fromCharCode(e.keyCode) === "Z") {
             blocks[blocks.length-1].rotateX(-1);
         }
+
+        if(String.fromCharCode(e.keyCode) === "Q") {
+            gameOver = true;
+        }
     });
 
     // Event listener for mousewheel
@@ -125,6 +131,11 @@ window.onload = function init() {
 };
 
 function render(time) {
+    if(gameOver) {
+        console.log("game over");
+        return;
+    }
+
     var dt = time - prevTime;
     prevTime = time;
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -134,7 +145,17 @@ function render(time) {
 
         // If block moved we check for collision and undo its motion if needed
         if(blocks[i].moved) {
-            if(blocks[i].y < 0) {
+            var collided = false;
+            for(var k = 0; k < blocks.length; k++) {
+                if(k != i) {
+                    collided = collided || blocks[i].checkCollision(blocks[k].cubes, blocks[k].x, blocks[k].y, blocks[k].z);
+                }
+            }
+            if(blocks[i].isBelow()) {
+                collided = true;
+            }
+
+            if(collided) {
                 blocks[i].land();
                 spawnBlock();
             }

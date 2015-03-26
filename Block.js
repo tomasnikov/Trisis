@@ -85,3 +85,25 @@ Block.prototype.rotate = function(first, second, sign) {
         this.cubes[i][first] = temp;
     }
 };
+
+Block.prototype.isBelow = function() {
+    for(var i = 0; i < this.cubes.length; i++) {
+        if(this.y+this.cubes[i][1] < 0) {
+            return true;
+        }
+    }
+
+    return false;
+};
+
+Block.prototype.checkCollision = function(cubes, x, y, z) {
+    for(var i = 0; i < this.cubes.length; i++) {
+        for(var j = 0; j < cubes.length; j++) {
+            if(this.x+this.cubes[i][0] == x+cubes[j][0] && this.y+this.cubes[i][1] == y+cubes[j][1] && this.z+this.cubes[i][2] == z+cubes[j][2]) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
