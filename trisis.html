@@ -15,7 +15,7 @@ uniform mat4 modelview;
 void main() {
 
     fTexCoord = vTexCoord;
-    gl_Position = rotation * vPosition;
+    gl_Position = projection*modelview* vPosition;
 } 
 </script>
 

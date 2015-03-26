@@ -19,6 +19,8 @@ var origX;
 var origY;
 var moveUp = 30;
 
+var zDist = 5;
+
 var matrixLoc;
 var program;
 
@@ -109,6 +111,15 @@ window.onload = function init() {
             blocks[blocks.length-1].rotateX(-1);
         }
     });
+
+    // Event listener for mousewheel
+    window.addEventListener("mousewheel", function(e){
+         if( e.wheelDelta > 0.0 ) {
+             zDist += 0.2;
+         } else {
+             zDist -= 0.2;
+         }
+     }  );  
     
     render(0);
 };
