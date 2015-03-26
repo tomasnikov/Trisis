@@ -20,7 +20,7 @@ function Block(descr) {
 }
 
 Block.prototype.render = function(spinX, spinY) {
-    var ctm = mat4();
+    var ctm = lookAt( vec3(0.0, 0.0, zDist), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0) );
     ctm = mult(ctm, rotate(parseFloat(spinX), [1, 0, 0]));
     ctm = mult(ctm, rotate(parseFloat(spinY), [0, 1, 0])) ;
 
@@ -43,7 +43,7 @@ Block.prototype.renderCube = function(ctm, x, y, z) {
     gl.bindTexture( gl.TEXTURE_2D, textures[this.colorIndex+1] );
     var ctm1 = mult(ctm, translate(x, y, z));
     ctm1 = mult(ctm1, scale4(this.spaceBetween, this.spaceBetween, this.spaceBetween));
-    gl.uniformMatrix4fv(matrixLoc, false, flatten(ctm1));
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm1));
     gl.drawArrays(gl.TRIANGLES, this.numVertices*this.colorIndex, this.numVertices);
 };
 

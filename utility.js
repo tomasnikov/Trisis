@@ -120,6 +120,11 @@ function setupGL() {
 
     matrixLoc = gl.getUniformLocation(program, "rotation");
 
+    proLoc = gl.getUniformLocation( program, "projection" );
+    mvLoc = gl.getUniformLocation( program, "modelview" );
+
+    var proj = perspective( 50.0, 1.0, 0.2, 100.0 );
+    gl.uniformMatrix4fv(proLoc, false, flatten(proj));
     
     for(var i = 1; i<=6; i++){
         textures[i] = configureTexture(document.getElementById("texImage" + i));
