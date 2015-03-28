@@ -19,7 +19,7 @@ var origX;
 var origY;
 var moveUp = 30;
 
-var zDist = 5;
+var zDist = 9;
 
 var matrixLoc;
 var program;

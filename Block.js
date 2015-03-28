@@ -35,7 +35,7 @@ Block.prototype.render = function(spinX, spinY) {
 Block.prototype.calculateRenderLocation = function() {
     this.spaceBetween = 2/BOARD_SIZE;
     this.renderX = (this.x-BOARD_SIZE/2)/(BOARD_SIZE/2);
-    this.renderY = (this.y-BOARD_HEIGHT/2)/(BOARD_HEIGHT/2);
+    this.renderY = (this.y-BOARD_HEIGHT/2)/(BOARD_SIZE/2);
     this.renderZ = (this.z-BOARD_SIZE/2)/(BOARD_SIZE/2);
 };
 
