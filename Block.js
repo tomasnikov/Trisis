@@ -7,8 +7,7 @@ function Block(descr) {
     }
     this.numVertices = 36;
     this.colorIndex = Math.floor(Math.random()*6);
-    this.DROP_TIME = 1000;
-    this.timer = this.DROP_TIME;
+    this.timer = DROP_TIME;
     this.active = true;
     this.moved = false;
     this.type = Math.floor(Math.random()*2);
@@ -32,6 +31,31 @@ Block.prototype.render = function(spinX, spinY) {
     }
 };
 
+Block.prototype.getCubeLocations = function() {
+    var cubes = [];
+    for(var i = 0; i < this.cubes.length; i++) {
+        cubes.push([this.x + this.cubes[i][0], this.y + this.cubes[i][1], this.z + this.cubes[i][2]]);
+    }
+    return cubes;
+};
+
+Block.prototype.clearRow = function(y) {
+    if(this.active) {
+        return;
+    }
+    var removeCubes = [];
+    for(var i = 0; i < this.cubes.length; i++) {
+        if(this.cubes[i][1]+this.y == y) {
+            removeCubes.push(i);
+        } else if(this.cubes[i][1]+this.y > y) {
+            this.cubes[i][1] -= 1;
+        }
+    }
+    for(i = removeCubes.length-1; i >= 0; i--) {
+        this.cubes.splice(removeCubes[i], 1);
+    }
+};
+
 Block.prototype.calculateRenderLocation = function() {
     this.spaceBetween = 2/BOARD_SIZE;
     this.renderX = (this.x-BOARD_SIZE/2)/(BOARD_SIZE/2);
@@ -51,7 +75,7 @@ Block.prototype.update = function(dt) {
     if(this.active) {
         this.timer -= dt;
         if(this.timer <= 0) {
-            this.timer = this.DROP_TIME;
+            this.timer = DROP_TIME;
             this.y -= 1;
             this.moved = true;
         } else {
@@ -62,7 +86,7 @@ Block.prototype.update = function(dt) {
 
 Block.prototype.dropDown = function() {
     if(this.active) {
-        this.timer = this.DROP_TIME;
+        this.timer = DROP_TIME;
         this.y -= 1;
         this.moved = true;
     }
@@ -94,13 +118,19 @@ Block.prototype.rotate = function(first, second, sign) {
     }
 };
 
-Block.prototype.isBelow = function() {
+Block.prototype.isOutsideBox = function() {
     for(var i = 0; i < this.cubes.length; i++) {
         if(this.y+this.cubes[i][1] < 0) {
             return true;
         }
     }
-
+    var realCubeLocations = this.getCubeLocations();
+    for(i = 0; i < realCubeLocations.length; i++) {
+        if(realCubeLocations[i][0] < 0 || realCubeLocations[i][0] >= BOARD_SIZE ||
+                realCubeLocations[i][2] < 0 || realCubeLocations[i][2] >= BOARD_SIZE) {
+            return true;
+        }
+    }
     return false;
 };
 

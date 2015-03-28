@@ -27,6 +27,17 @@ var program;
 var blocks = [];
 var textures = [];
 
+var board = [];
+for(var y = 0; y < BOARD_HEIGHT; y++) {
+    board.push([]);
+    for(var x = 0; x < BOARD_SIZE; x++) {
+        board[y].push([]);
+        for(var z = 0; z < BOARD_SIZE; z++) {
+            board[y][x].push(0);
+        }
+    }
+}
+
 var time = 0;
 var prevTime = -1/60;
 
@@ -71,18 +82,30 @@ window.onload = function init() {
     window.addEventListener("keydown", function(e) {
         if(e.keyCode == 38 && blocks[blocks.length-1].z < BOARD_SIZE-1) { // up
             blocks[blocks.length-1].z += 1;
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].z -= 1;
+            }
         }
 
         if(e.keyCode == 40 && blocks[blocks.length-1].z > 0) { // down
             blocks[blocks.length-1].z -= 1;
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].z += 1;
+            }
         }
 
-        if(e.keyCode == 37  && blocks[blocks.length-1].x > 0) {
+        if(e.keyCode == 37 && blocks[blocks.length-1].x > 0) {
             blocks[blocks.length-1].x -= 1;
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].x += 1;
+            }
         }
 
-        if(e.keyCode == 39  && blocks[blocks.length-1].x < BOARD_SIZE-1) {
+        if(e.keyCode == 39) {
             blocks[blocks.length-1].x += 1;
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].x -= 1;
+            }
         }
 
         if(e.keyCode == 32) {
@@ -181,7 +204,9 @@ function render(time) {
 
 function landBlock(blockIndex) {
     blocks[blockIndex].land();
+    addBlock(blocks[blockIndex]);
     spawnBlock();
+    checkRows();
 }
 
 function isColliding(blockIndex) {
@@ -191,11 +216,63 @@ function isColliding(blockIndex) {
             collided = collided || blocks[blockIndex].checkCollision(blocks[k].cubes, blocks[k].x, blocks[k].y, blocks[k].z);
         }
     }
-    if(blocks[blockIndex].isBelow()) {
+    if(blocks[blockIndex].isOutsideBox()) {
         collided = true;
     }
 
     return collided;
+}
+
+function checkRows() {
+    for(var y = 0; y < BOARD_HEIGHT; y++) {
+        if(isRowFull(y)) {
+            clearRow(y);
+            y--;
+        }
+    }
+}
+
+function addBlock(block) {
+    var cubes = block.getCubeLocations();
+    for(var i = 0; i < cubes.length; i++) {
+        board[cubes[i][1]][cubes[i][0]][cubes[i][2]] = 1;
+    }
+}
+
+function isRowFull(y) {
+    for(var x = 0; x < BOARD_SIZE; x++) {
+        for(var z = 0; z < BOARD_SIZE; z++) {
+            if(board[y][x][z] === 0) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function clearRow(y) {
+    console.log("clearing row " + y);
+    // Let blocks know so they can render correctly
+    for(var k = 0; k < blocks.length; k++) {
+        this.blocks[k].clearRow(y);
+    }
+
+    // Correct the board array
+    var x,z;
+    // Move everyone down a level
+    for(var i = y; i < BOARD_HEIGHT-1; i++) {
+        for(x = 0; x < BOARD_SIZE; x++) {
+            for(z = 0; z < BOARD_SIZE; z++) {
+                board[i][x][z] = board[i+1][x][z];
+            }
+        }
+    }
+    // Empty top layer
+    for(x = 0; x < BOARD_SIZE; x++) {
+        for(z = 0; z < BOARD_SIZE; z++) {
+            board[BOARD_HEIGHT-1][x][z] = 0;
+        }
+    }
 }
 
 function spawnBlock() {
