@@ -89,30 +89,49 @@ window.onload = function init() {
             while(!isColliding(blocks.length-1)) {
                 blocks[blocks.length-1].dropDown();
             }
+            landBlock(blocks.length-1);
         }
 
         if(String.fromCharCode(e.keyCode) === "D") {
             blocks[blocks.length-1].rotateZ(1);
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].rotateZ(-1);
+            }
         }
 
         if(String.fromCharCode(e.keyCode) === "C") {
             blocks[blocks.length-1].rotateZ(-1);
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].rotateZ(1);
+            }
         }
 
         if(String.fromCharCode(e.keyCode) === "S") {
             blocks[blocks.length-1].rotateY(1);
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].rotateY(-1);
+            }
         }
 
         if(String.fromCharCode(e.keyCode) === "X") {
             blocks[blocks.length-1].rotateY(-1);
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].rotateY(1);
+            }
         }
 
         if(String.fromCharCode(e.keyCode) === "A") {
             blocks[blocks.length-1].rotateX(1);
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].rotateX(-1);
+            }
         }
 
         if(String.fromCharCode(e.keyCode) === "Z") {
             blocks[blocks.length-1].rotateX(-1);
+            if(isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].rotateX(1);
+            }
         }
 
         if(String.fromCharCode(e.keyCode) === "Q") {
@@ -150,8 +169,7 @@ function render(time) {
             var collided = isColliding(i);
 
             if(collided) {
-                blocks[i].land();
-                spawnBlock();
+                landBlock(i);
             }
         }
 
@@ -159,6 +177,11 @@ function render(time) {
     }
 
     requestAnimFrame(render);
+}
+
+function landBlock(blockIndex) {
+    blocks[blockIndex].land();
+    spawnBlock();
 }
 
 function isColliding(blockIndex) {
