@@ -60,6 +60,14 @@ Block.prototype.update = function(dt) {
     }
 };
 
+Block.prototype.dropDown = function() {
+    if(this.active) {
+        this.timer = this.DROP_TIME;
+        this.y -= 1;
+        this.moved = true;
+    }
+};
+
 Block.prototype.land = function() {
     this.active = false;
     this.moved = false;

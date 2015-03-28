@@ -86,7 +86,9 @@ window.onload = function init() {
         }
 
         if(e.keyCode == 32) {
-            blocks[blocks.length-1].y = 0;
+            while(!isColliding(blocks.length-1)) {
+                blocks[blocks.length-1].dropDown();
+            }
         }
 
         if(String.fromCharCode(e.keyCode) === "D") {
@@ -145,15 +147,7 @@ function render(time) {
 
         // If block moved we check for collision and undo its motion if needed
         if(blocks[i].moved) {
-            var collided = false;
-            for(var k = 0; k < blocks.length; k++) {
-                if(k != i) {
-                    collided = collided || blocks[i].checkCollision(blocks[k].cubes, blocks[k].x, blocks[k].y, blocks[k].z);
-                }
-            }
-            if(blocks[i].isBelow()) {
-                collided = true;
-            }
+            var collided = isColliding(i);
 
             if(collided) {
                 blocks[i].land();
@@ -165,6 +159,20 @@ function render(time) {
     }
 
     requestAnimFrame(render);
+}
+
+function isColliding(blockIndex) {
+    var collided = false;
+    for(var k = 0; k < blocks.length; k++) {
+        if(k != blockIndex) {
+            collided = collided || blocks[blockIndex].checkCollision(blocks[k].cubes, blocks[k].x, blocks[k].y, blocks[k].z);
+        }
+    }
+    if(blocks[blockIndex].isBelow()) {
+        collided = true;
+    }
+
+    return collided;
 }
 
 function spawnBlock() {
