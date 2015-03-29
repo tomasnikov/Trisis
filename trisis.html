@@ -16,7 +16,7 @@ void main() {
 
     fTexCoord = vTexCoord;
     gl_Position = projection*modelview* vPosition;
-} 
+}
 </script>
 
 <script id="fragment-shader" type="x-shader/x-fragment">
@@ -46,6 +46,9 @@ void main() {
 <canvas id="gl-canvas" width="512" height="512">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
+<div id="messages">
+Score: 0
+</div>
 <img id = "texImage1" src = "textures/tetrisblue.png" hidden ></img>
 <img id = "texImage2" src = "textures/tetriscyan.png" hidden ></img>
 <img id = "texImage3" src = "textures/tetrispink.png" hidden ></img>

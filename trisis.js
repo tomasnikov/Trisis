@@ -28,24 +28,19 @@ var blocks = [];
 var textures = [];
 
 var board = [];
-for(var y = 0; y < BOARD_HEIGHT; y++) {
-    board.push([]);
-    for(var x = 0; x < BOARD_SIZE; x++) {
-        board[y].push([]);
-        for(var z = 0; z < BOARD_SIZE; z++) {
-            board[y][x].push(0);
-        }
-    }
-}
+initBoard();
 
 var time = 0;
 var prevTime = -1/60;
 
 var gameOver = false;
+var score = 0;
+var messageElement;
 
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
-    
+    messageElement = document.getElementById("messages");
+
     gl = WebGLUtils.setupWebGL( canvas );
     if (!gl) { alert("WebGL isn't available"); }
 
@@ -109,10 +104,14 @@ window.onload = function init() {
         }
 
         if(e.keyCode == 32) {
-            while(!isColliding(blocks.length-1)) {
-                blocks[blocks.length-1].dropDown();
+            if(!gameOver) {
+                while(!isColliding(blocks.length-1)) {
+                    blocks[blocks.length-1].dropDown();
+                }
+                landBlock(blocks.length-1);
+            } else {
+                reset();
             }
-            landBlock(blocks.length-1);
         }
 
         if(String.fromCharCode(e.keyCode) === "D") {
@@ -169,34 +168,56 @@ window.onload = function init() {
          } else {
              zDist -= 0.2;
          }
-     }  );  
-    
+     }  );
+
     render(0);
 };
 
-function render(time) {
-    if(gameOver) {
-        console.log("game over");
-        return;
-    }
+function reset() {
+    initBoard();
+    blocks = [];
+    spawnBlock();
+    gameOver = false;
+}
 
-    var dt = time - prevTime;
-    prevTime = time;
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    for (var i = 0; i < blocks.length; i++) {
-        blocks[i].update(dt);
-
-        // If block moved we check for collision and undo its motion if needed
-        if(blocks[i].moved) {
-            var collided = isColliding(i);
-
-            if(collided) {
-                landBlock(i);
+function initBoard() {
+    board = [];
+    for(var y = 0; y < BOARD_HEIGHT; y++) {
+        board.push([]);
+        for(var x = 0; x < BOARD_SIZE; x++) {
+            board[y].push([]);
+            for(var z = 0; z < BOARD_SIZE; z++) {
+                board[y][x].push(0);
             }
         }
+    }
+}
 
-        blocks[i].render(spinX, spinY);
+function render(time) {
+    if(!gameOver) {
+        var dt = time - prevTime;
+        prevTime = time;
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        for (var i = 0; i < blocks.length; i++) {
+            blocks[i].update(dt);
+
+            // If block moved we check for collision and undo its motion if needed
+            if(blocks[i].moved) {
+                var collided = isColliding(i);
+
+                if(collided) {
+                    landBlock(i);
+                }
+            }
+
+            blocks[i].render(spinX, spinY);
+        }
+    }
+
+    messageElement.textContent = "Score: " + score;
+    if(gameOver) {
+        messageElement.textContent += " - Game over! Press space to restart";
     }
 
     requestAnimFrame(render);
@@ -224,18 +245,25 @@ function isColliding(blockIndex) {
 }
 
 function checkRows() {
+    var rowCleared = 0;
     for(var y = 0; y < BOARD_HEIGHT; y++) {
         if(isRowFull(y)) {
+            rowCleared++;
             clearRow(y);
             y--;
         }
     }
+    score += rowCleared*rowCleared*100
 }
 
 function addBlock(block) {
     var cubes = block.getCubeLocations();
     for(var i = 0; i < cubes.length; i++) {
-        board[cubes[i][1]][cubes[i][0]][cubes[i][2]] = 1;
+        if(cubes[i][1] >= BOARD_HEIGHT) {
+            gameOver = true;
+        } else {
+            board[cubes[i][1]][cubes[i][0]][cubes[i][2]] = 1;
+        }
     }
 }
 
