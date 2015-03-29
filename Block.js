@@ -21,7 +21,7 @@ function Block(descr) {
 Block.prototype.render = function(spinX, spinY) {
     var ctm = lookAt( vec3(0.0, 0.0, zDist), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0) );
     ctm = mult(ctm, rotate(parseFloat(spinX), [1, 0, 0]));
-    ctm = mult(ctm, rotate(parseFloat(spinY), [0, 1, 0])) ;
+    ctm = mult(ctm, rotate(parseFloat(spinY), [0, 1, 0]));
 
     this.calculateRenderLocation();
     // Hver teningur

@@ -1,13 +1,23 @@
-function colorCube(i) {
-    quad(1, 0, 3, 2, i);
-    quad(2, 3, 7, 6, i);
-    quad(3, 0, 4, 7, i);
-    quad(6, 5, 1, 2, i);
-    quad(4, 5, 6, 7, i);
-    quad(5, 4, 0, 1, i);
+function colorCube() {
+    quad(1, 0, 3, 2);
+    quad(2, 3, 7, 6);
+    quad(3, 0, 4, 7);
+    quad(6, 5, 1, 2);
+    quad(4, 5, 6, 7);
+    quad(5, 4, 0, 1);
 }
 
-function quad(a, b, c, d, e) {
+function colorGrid()
+{
+    grid( 1, 0, 3, 2, 8 );
+    grid( 2, 3, 7, 6, 8 );
+    grid( 3, 0, 4, 7, 6 );
+    grid( 6, 5, 1, 2, 6 );
+    grid( 4, 5, 6, 7, 8 );
+    grid( 5, 4, 0, 1, 8 );
+}
+
+function quad(a, b, c, d) {
     var vertices = [
         vec3(-0.5, -0.5,  0.5),
         vec3(-0.5,  0.5,  0.5),
@@ -17,17 +27,6 @@ function quad(a, b, c, d, e) {
         vec3(-0.5,  0.5, -0.5),
         vec3( 0.5,  0.5, -0.5),
         vec3( 0.5, -0.5, -0.5)
-    ];
-
-    var vertexColors = [
-        [0.0, 0.0, 0.0, 1.0],  // black
-        [1.0, 0.0, 0.0, 1.0],  // red
-        [1.0, 1.0, 0.0, 1.0],  // yellow
-        [0.0, 1.0, 0.0, 1.0],  // green
-        [0.0, 0.0, 1.0, 1.0],  // blue
-        [1.0, 0.0, 1.0, 1.0],  // magenta
-        [0.0, 1.0, 1.0, 1.0],  // cyan
-        [1.0, 1.0, 1.0, 1.0]   // white
     ];
 
     var texCo = [
@@ -51,7 +50,36 @@ function quad(a, b, c, d, e) {
         //colors.push( vertexColors[indices[i]] );
         texCoords.push( texCo[texind[i]] );
         // for solid colored faces use 
-        colors.push(vertexColors[e]);
+    }
+}
+
+function grid(a, b, c, d, e) 
+{
+    var vertices = [
+        vec3( -1.5, -2,  1.5 ),
+        vec3( -1.5,  2,  1.5 ),
+        vec3(  1.5,  2,  1.5 ),
+        vec3(  1.5, -2,  1.5 ),
+        vec3( -1.5, -2, -1.5 ),
+        vec3( -1.5,  2, -1.5 ),
+        vec3(  1.5,  2, -1.5 ),
+        vec3(  1.5, -2, -1.5 )
+    ];
+
+    var texCo = [
+        vec2(0, 0),
+        vec2(0, e),
+        vec2(6, e),
+        vec2(6, 0)
+    ];
+
+    //vertex texture coordinates assigned by the index of the vertex
+    var indices = [ a, b, c, a, c, d ];
+    var texind  = [ 1, 0, 3, 1, 3, 2 ];
+
+    for ( var i = 0; i < indices.length; ++i ) {
+        points.push( vertices[indices[i]] );
+        texCoords.push( texCo[texind[i]] );
     }
 }
 
@@ -129,5 +157,7 @@ function setupGL() {
     for(var i = 1; i<=6; i++){
         textures[i] = configureTexture(document.getElementById("texImage" + i));
     }
+
+    textureGrid = configureTexture(document.getElementById("texImageGrid"));
     
 }
