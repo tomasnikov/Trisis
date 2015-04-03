@@ -202,7 +202,7 @@ function render(time) {
     mv = mult(mv, rotate(parseFloat(spinX), [1, 0, 0]));
     mv = mult(mv, rotate(parseFloat(spinY), [0, 1, 0]));
     mv = mult(mv, scale4(2/3, 2/3, 2/3));
-    mv = mult(mv, translate(-1/3+0.05, 2/3, -1/3+0.05));
+    mv = mult(mv, translate(-1/3+0.05, 2/3+0.05, -1/3+0.05));
     gl.uniformMatrix4fv(mvLoc, false, flatten(mv));
     gl.drawArrays(gl.TRIANGLES, 36*6, 36);
     gl.cullFace(gl.BACK);
