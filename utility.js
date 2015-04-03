@@ -56,14 +56,14 @@ function quad(a, b, c, d) {
 function grid(a, b, c, d, e) 
 {
     var vertices = [
-        vec3( -BOARD_SIZE/4, -BOARD_HEIGHT/4,  BOARD_SIZE/4 ),
-        vec3( -BOARD_SIZE/4,  BOARD_HEIGHT/4,  BOARD_SIZE/4 ),
-        vec3(  BOARD_SIZE/4,  BOARD_HEIGHT/4,  BOARD_SIZE/4 ),
-        vec3(  BOARD_SIZE/4, -BOARD_HEIGHT/4,  BOARD_SIZE/4 ),
-        vec3( -BOARD_SIZE/4, -BOARD_HEIGHT/4, -BOARD_SIZE/4 ),
-        vec3( -BOARD_SIZE/4,  BOARD_HEIGHT/4, -BOARD_SIZE/4 ),
-        vec3(  BOARD_SIZE/4,  BOARD_HEIGHT/4, -BOARD_SIZE/4 ),
-        vec3(  BOARD_SIZE/4, -BOARD_HEIGHT/4, -BOARD_SIZE/4 )
+        vec3( -BOARD_SIZE/4, -24/4,  BOARD_SIZE/4 ),
+        vec3( -BOARD_SIZE/4,  20/4,  BOARD_SIZE/4 ),
+        vec3(  BOARD_SIZE/4,  20/4,  BOARD_SIZE/4 ),
+        vec3(  BOARD_SIZE/4, -24/4,  BOARD_SIZE/4 ),
+        vec3( -BOARD_SIZE/4, -24/4, -BOARD_SIZE/4 ),
+        vec3( -BOARD_SIZE/4,  20/4, -BOARD_SIZE/4 ),
+        vec3(  BOARD_SIZE/4,  20/4, -BOARD_SIZE/4 ),
+        vec3(  BOARD_SIZE/4, -24/4, -BOARD_SIZE/4 )
     ];
 
     var texCo = [
@@ -120,7 +120,7 @@ function scale4(x, y, z) {
 
 function setupGL() {
     gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    gl.clearColor(0.0, 0.0, 0.0, 0.5);
     
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
