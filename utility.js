@@ -9,12 +9,12 @@ function colorCube() {
 
 function colorGrid()
 {
-    grid( 1, 0, 3, 2, 8 );
-    grid( 2, 3, 7, 6, 8 );
-    grid( 3, 0, 4, 7, 6 );
-    grid( 6, 5, 1, 2, 6 );
-    grid( 4, 5, 6, 7, 8 );
-    grid( 5, 4, 0, 1, 8 );
+    grid( 1, 0, 3, 2, BOARD_HEIGHT );
+    grid( 2, 3, 7, 6, BOARD_HEIGHT );
+    grid( 3, 0, 4, 7, BOARD_SIZE );
+    grid( 6, 5, 1, 2, BOARD_SIZE );
+    grid( 4, 5, 6, 7, BOARD_HEIGHT );
+    grid( 5, 4, 0, 1, BOARD_HEIGHT );
 }
 
 function quad(a, b, c, d) {
@@ -56,21 +56,21 @@ function quad(a, b, c, d) {
 function grid(a, b, c, d, e) 
 {
     var vertices = [
-        vec3( -1.5, -2,  1.5 ),
-        vec3( -1.5,  2,  1.5 ),
-        vec3(  1.5,  2,  1.5 ),
-        vec3(  1.5, -2,  1.5 ),
-        vec3( -1.5, -2, -1.5 ),
-        vec3( -1.5,  2, -1.5 ),
-        vec3(  1.5,  2, -1.5 ),
-        vec3(  1.5, -2, -1.5 )
+        vec3( -BOARD_SIZE/4, -BOARD_HEIGHT/4,  BOARD_SIZE/4 ),
+        vec3( -BOARD_SIZE/4,  BOARD_HEIGHT/4,  BOARD_SIZE/4 ),
+        vec3(  BOARD_SIZE/4,  BOARD_HEIGHT/4,  BOARD_SIZE/4 ),
+        vec3(  BOARD_SIZE/4, -BOARD_HEIGHT/4,  BOARD_SIZE/4 ),
+        vec3( -BOARD_SIZE/4, -BOARD_HEIGHT/4, -BOARD_SIZE/4 ),
+        vec3( -BOARD_SIZE/4,  BOARD_HEIGHT/4, -BOARD_SIZE/4 ),
+        vec3(  BOARD_SIZE/4,  BOARD_HEIGHT/4, -BOARD_SIZE/4 ),
+        vec3(  BOARD_SIZE/4, -BOARD_HEIGHT/4, -BOARD_SIZE/4 )
     ];
 
     var texCo = [
         vec2(0, 0),
         vec2(0, e),
-        vec2(6, e),
-        vec2(6, 0)
+        vec2(BOARD_SIZE, e),
+        vec2(BOARD_SIZE, 0)
     ];
 
     //vertex texture coordinates assigned by the index of the vertex
@@ -90,9 +90,9 @@ function configureTexture( image ) {
     gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image );
     gl.generateMipmap( gl.TEXTURE_2D );
 //    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE );
-    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE );
+//    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE );
     gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT );
-//    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT );
     gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR );
     gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
     
@@ -123,6 +123,8 @@ function setupGL() {
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     
     gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+    gl.cullFace(gl.FRONT);
 
     //
     //  Load shaders and initialize attribute buffers

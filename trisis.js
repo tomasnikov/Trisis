@@ -194,18 +194,23 @@ function initBoard() {
         }
     }
 }
-
+var temp = 0;
 function render(time) {
-    if(!gameOver) {
-
+    gl.cullFace(gl.FRONT);
+    gl.bindTexture( gl.TEXTURE_2D, textureGrid );
+    var mv = lookAt( vec3(0.0, 0.0, zDist), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0) );
+    mv = mult(mv, rotate(parseFloat(spinX), [1, 0, 0]));
+    mv = mult(mv, rotate(parseFloat(spinY), [0, 1, 0]));
+    gl.uniformMatrix4fv(mvLoc, false, flatten(mv));
+    gl.drawArrays(gl.TRIANGLES, 36*6, 36);
+    gl.cullFace(gl.BACK);
+    //temp++;
+    //console.log(temp);
+    if(!gameOver) {       
         gl.bindTexture( gl.TEXTURE_2D, textureGrid );
-        var mv = lookAt( vec3(0.0, 0.0, zDist), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0) );
-        mv = mult(mv, rotate(parseFloat(spinX), [1, 0, 0]));
-        mv = mult(mv, rotate(parseFloat(spinY), [0, 1, 0]));
         gl.uniformMatrix4fv(mvLoc, false, flatten(mv));
         gl.drawArrays(gl.TRIANGLES, 36*6, 36);
         
-
         var dt = time - prevTime;
         prevTime = time;
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
