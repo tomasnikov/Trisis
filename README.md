@@ -1,4 +1,2 @@
 # Trisis
-Fakk u nori
-Betri en þú tík
-^^man ekki hvort ég skrifaði þetta eða ekki...þú sökkar samt
+Tetris í þrívídd - verkefni í áfanganum Tölvugrafík í HÍ
